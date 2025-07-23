@@ -80,6 +80,31 @@ pip install -r requirements.txt
 ```bash
 streamlit run dashboard.py
 ```
+---
+
+## 📸 Capturas del sistema
+
+### 🧠 Dashboard principal
+
+![Dashboard en ejecución](https://github.com/M1lexxx/phishing-campaign-collector/raw/main/screenshot-dashboard.jpg)
+
+> Interfaz general del panel donde se visualizan campañas activas y alertas.
+
+---
+
+### 🌍 Geolocalización de IPs sospechosas
+
+![IPs geolocalizadas](https://github.com/M1lexxx/phishing-campaign-collector/raw/main/screenshot-geolocalizacion.jpg)
+
+> Visualización en tiempo real de ubicaciones asociadas a IPs maliciosas reportadas.
+
+---
+
+### 🔍 Descarga de IOCs en formato CSV
+
+![Consulta API](https://github.com/M1lexxx/phishing-campaign-collector/raw/main/screenshot-csv.jpg)
+
+> El sistema permite exportar indicadores de compromiso (IOCs) en formato .csv para su análisis o integración con otras herramientas de ciberseguridad.
 
 ---
 
