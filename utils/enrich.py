@@ -2,67 +2,60 @@ import socket
 import requests
 import yaml
 
+# 🔑 Cargar claves desde config.yaml una sola vez
+def load_config():
+    with open("config.yaml", "r") as f:
+        return yaml.safe_load(f)
+
+config = load_config()
+ABUSE_KEY = config.get("abuseipdb_api_key")
+VT_KEY = config.get("virustotal_api_key")
+
 # 🧠 Obtener IP desde dominio
 def get_ip_from_domain(domain):
     try:
-        ip = socket.gethostbyname(domain)
-        return ip
+        return socket.gethostbyname(domain)
     except socket.gaierror:
         return None
 
 # 🌍 Obtener país desde IP
 def get_country_from_ip(ip):
     try:
-        url = f"http://ip-api.com/json/{ip}"
-        response = requests.get(url, timeout=5)
+        response = requests.get(f"http://ip-api.com/json/{ip}", timeout=5)
         if response.status_code == 200:
-            data = response.json()
-            return data.get("country", "Desconocido")
-    except Exception:
+            return response.json().get("country", "Desconocido")
+    except:
         pass
     return "Desconocido"
 
-# 🔑 Leer API Keys desde config.yaml
-def load_api_key():
-    with open("config.yaml", "r") as f:
-        config = yaml.safe_load(f)
-    return config.get("abuseipdb_api_key")
-
-def load_virustotal_key():
-    with open("config.yaml", "r") as f:
-        config = yaml.safe_load(f)
-    return config.get("virustotal_api_key")
-
-# 🛡️ Consultar IP en VirusTotal si falla AbuseIPDB
+# 🔍 Verificar IP con VirusTotal
 def check_ip_virustotal(ip):
     try:
-        api_key = load_virustotal_key()
         url = f"https://www.virustotal.com/api/v3/ip_addresses/{ip}"
-        headers = {
-            "x-apikey": api_key
-        }
+        headers = {"x-apikey": VT_KEY}
         response = requests.get(url, headers=headers, timeout=5)
         if response.status_code == 200:
-            stats = response.json()["data"]["attributes"]["last_analysis_stats"]
-            return "Sí (VT)" if stats["malicious"] > 0 else "No"
-    except Exception:
+            data = response.json().get("data", {})
+            attributes = data.get("attributes", {})
+            stats = attributes.get("last_analysis_stats", {})
+            return "Sí (VT)" if stats.get("malicious", 0) > 0 else "No"
+    except:
         pass
     return None
 
-# 🔍 Verificar si una IP es maliciosa usando AbuseIPDB o VirusTotal
+# 🛡️ Verificar IP con AbuseIPDB (con fallback a VirusTotal)
 def is_ip_malicious(ip):
     try:
-        api_key = load_api_key()
         url = "https://api.abuseipdb.com/api/v2/check"
-        querystring = {"ipAddress": ip, "maxAgeInDays": "30"}
-        headers = {"Accept": "application/json", "Key": api_key}
-        response = requests.get(url, headers=headers, params=querystring, timeout=5)
+        headers = {"Accept": "application/json", "Key": ABUSE_KEY}
+        params = {"ipAddress": ip, "maxAgeInDays": "30"}
+        response = requests.get(url, headers=headers, params=params, timeout=5)
         if response.status_code == 200:
-            score = response.json()['data']['abuseConfidenceScore']
+            data = response.json().get("data", {})
+            score = data.get("abuseConfidenceScore", 0)
             return "Sí (AbuseIPDB)" if score >= 50 else "No"
     except:
         pass
 
-    # Fallback a VirusTotal si falla AbuseIPDB
-    vt_result = check_ip_virustotal(ip)
-    return vt_result if vt_result else "Desconocido"
+    # Si AbuseIPDB falla, usar VirusTotal
+    return check_ip_virustotal(ip) or "Desconocido"
