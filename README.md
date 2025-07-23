@@ -75,6 +75,11 @@ pip install -r requirements.txt
 ```
 
 4. Configurá tu `config.yaml` con las claves correspondientes.
+```bash
+Para que el sistema funcione correctamente:
+
+Renombrá el archivo: config.example.yaml → config.yaml con tus claves de AbuseIPDB y VirusTotal.
+```
 
 5. Ejecutá el dashboard:
 ```bash
@@ -97,6 +102,14 @@ streamlit run dashboard.py
 ![IPs geolocalizadas](https://github.com/M1lexxx/phishing-campaign-collector/raw/main/screenshot-geolocalizacion.jpg)
 
 > Visualización en tiempo real de ubicaciones asociadas a IPs maliciosas reportadas.
+
+---
+
+### 🛡️ Verificación de IPs maliciosas con AbuseIPDB y VirusTotal
+
+![IPs geolocalizadas](https://github.com/M1lexxx/phishing-campaign-collector/raw/main/vt.jpg)
+
+> Visualización de resultados enriquecidos con reputación de IPs a través de motores de análisis como [AbuseIPDB](https://www.abuseipdb.com/) y [VirusTotal](https://www.virustotal.com/). Cada IP se clasifica automáticamente como maliciosa o no en base a los reportes recibidos.
 
 ---
 
