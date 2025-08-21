@@ -64,7 +64,7 @@ cd phishing-campaign-collector
 ```bash
 python -m venv venv
 .
-env\Scripts ctivate  # Windows
+env\Scripts activate  # Windows
 # o
 source venv/bin/activate  # Linux/mac
 ```
