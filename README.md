@@ -47,9 +47,6 @@ Configuración sensible como claves API debe ir en un archivo `config.yaml` (no 
 abuseipdb_api_key: "TU_API_KEY"
 virustotal_api_key: "TU_API_KEY"
 ```
-
-O también podés usar variables de entorno con un archivo `.env`.
-
 ---
 
 ## ▶️ Cómo usar
@@ -58,15 +55,29 @@ O también podés usar variables de entorno con un archivo `.env`.
 ```bash
 git clone https://github.com/M1lexxx/phishing-campaign-collector.git
 cd phishing-campaign-collector
+
+O en ZIP:
+
+En GitHub: Code → Download ZIP
+
+Descomprimí y abrí la carpeta.
+
 ```
 
-2. Creá un entorno virtual (opcional):
+2. Creá un entorno virtual :
 ```bash
+# Windows
 python -m venv venv
-.
-env\Scripts activate  # Windows
-# o
-source venv/bin/activate  # Linux/mac
+venv\Scripts\activate
+
+# Windows – PowerShell (alternativa):
+python -m venv venv
+.\venv\Scripts\Activate
+
+# o Linux/mac
+python3 -m venv venv
+source venv/bin/activate
+   
 ```
 
 3. Instalá las dependencias:
@@ -79,11 +90,25 @@ pip install -r requirements.txt
 Para que el sistema funcione correctamente:
 
 Renombrá el archivo: config.example.yaml → config.yaml con tus claves de AbuseIPDB y VirusTotal.
+
+Editar config.yaml:
+
+abuseipdb_api_key: "TU_ABUSEIPDB_API_KEY"
+virustotal_api_key: "TU_VIRUSTOTAL_API_KEY"
+
+Dejá config.yaml en la raíz del proyecto (misma carpeta que dashboard.py).
+
 ```
 
 5. Ejecutá el dashboard:
 ```bash
 streamlit run dashboard.py
+```
+6. Ejecutá opcion rápida con script batch (Windows):
+Después de configurar config.yaml (punto 4), podés iniciar todo ejecutando el archivo starts.bat (doble click o desde CMD)
+
+```bash
+starts.bat
 ```
 ---
 
